@@ -1,1 +1,125 @@
+package Model;
+
+import java.util.*;
+import DAO.FerramentaDAO;
+import java.sql.SQLException;
+
+public class Ferramenta extends Pessoa {
+
+    // Atributos
+    private String Nome;
+    private String Marca;
+    private double Custo;
+    private int id;
+
+    private final FerramentaDAO dao;
+
+    // Método Construtor de Objeto Vazio
+    public Ferramenta() {
+        this.dao = new FerramentaDAO(); // inicializado não importa em qual construtor
+    }
+
+    // Método Construtor de Objeto, inserindo dados
+    public Ferramenta(String Nome, String Marca, double Custo) {
+        this.Nome = Nome;
+        this.Marca = Marca;
+        this.Custo = Custo;
+        this.dao = new FerramentaDAO(); // inicializado não importa em qual construtor
+    }
+
+    // Método Construtor usando também o construtor da SUPERCLASSE
+    public Ferramenta(String Nome, String Marca, double Custo, int id, String nome, int idade) {
+        super(id, nome, idade);
+        this.Nome = Nome;
+        this.Marca = Marca;
+        this.Custo = Custo;
+        this.dao = new FerramentaDAO(); // inicializado não importa em qual construtor
+    }
+
+    // Métodos GET e SET
+    public String getNome() {
+        return Nome;
+    }
+
+    public void setNome(String Nome) {
+        this.Nome = Nome;
+    }
+
+    public String getMarca() {
+        return Marca;
+    }
+
+    public void setMarca(String Marca) {
+        this.Marca = Marca;
+    }
+
+    public double getCusto() {
+        return Custo;
+    }
+
+    public void setCusto(double Custo) {
+        this.Custo = Custo;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    // Override necessário para poder retornar os dados de Pessoa no toString para ferramenta.
+    @Override
+    public String toString() {
+        return "\n ID: " + this.getId()
+                + "\n Nome: " + this.getNome()
+                + "\n Marca: " + this.getMarca()
+                + "\n Custo:" + this.getCusto()
+                + "\n -----------";
+    }
+
+    /*
+    
+        ABAIXO OS MÉTODOS PARA USO JUNTO COM O DAO
+        SIMULANDO A ESTRUTURA EM CAMADAS PARA USAR COM BANCOS DE DADOS.
+    
+     */
+    // Retorna a Lista de Ferramentas(objetos)
+    public ArrayList<Ferramenta> getMinhaLista() {
+        return dao.getMinhaLista();
+    }
+
+    // Cadastra nova ferramenta
+    public boolean InsertFerramentaBD(String Nome, String Marca, double Custo) throws SQLException {
+        int id = this.maiorID() + 1;
+        Ferramenta objeto = new Ferramenta(Nome, Marca, Custo, id, null, 0);
+        dao.InsertFerramentaBD(objeto);
+        return true;
+    }
+
+    // Deleta uma ferramenta específica pelo seu campo ID
+    public boolean DeleteFerramentaBD(int id) {
+        dao.DeleteFerramentaBD(id);
+        return true;
+    }
+
+    // Edita uma ferramenta específica pelo seu campo ID
+    public boolean UpdateFerramentaBD(String Nome, String Marca, double Custo, int id, String nome, int idade) {
+        Ferramenta objeto = new Ferramenta(Nome, Marca, Custo, id, nome, idade);
+        dao.UpdateFerramentaBD(objeto);
+        return true;
+    }
+
+    // carrega dados de uma ferramenta específica pelo seu ID
+    public Ferramenta carregaFerramenta(int id) {
+        dao.carregaFerramenta(id);
+        return null;
+    }
+    
+    // retorna o maior ID da nossa base de dados
+    public int maiorID() throws SQLException {
+        return dao.maiorID();
+    }
+}
 
