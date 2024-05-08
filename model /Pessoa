@@ -1,1 +1,65 @@
+package model;
 
+public class Pessoa {
+    
+ // Atributos
+    private int id;
+    private String Nome;
+    private String Marca;
+    private int Telefone;
+    private double Custo;
+
+    // Método Construtor de Objeto Vazio
+    public Pessoa() {
+    }
+
+    // Método Construtor de Objeto, inserindo dados
+    public Pessoa(int id, String Nome, String Marca, int Telefone, double Custo) {
+        this.id = id;
+        this.Nome = Nome;
+        this.Marca = Marca;
+        this.Telefone = Telefone;
+        this.Custo = Custo;
+    }
+
+    // Métodos GET e SET
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return Nome;
+    }
+
+    public void setNome(String Nome) {
+        this.Nome = Nome;
+    }
+
+    public String getMarca() {
+        return Marca;
+    }
+
+    public void setMarca(String Marca) {
+        this.Marca = Marca;
+    }
+
+    public int getTelefone() {
+        return Telefone;
+    }
+
+    public void setTelefone(int Telefone) {
+        this.Telefone = Telefone;
+    }
+
+    public double getCusto() {
+        return Custo;
+    }
+
+    public void setCusto(double Custo) {
+        this.Custo = Custo;
+    }
+}       
