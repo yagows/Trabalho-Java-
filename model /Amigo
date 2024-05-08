@@ -1,1 +1,113 @@
+package Model;
+
+import java.util.*;
+import DAO.AlunoDAO;
+import java.sql.SQLException;
+
+public class Amigo extends Pessoa {
+
+    // Atributos
+    private String Nome;
+    private int Telefone;
+    private int id;
+
+    private final AlunoDAO dao;
+
+    // Método Construtor de Objeto Vazio
+    public Amigo() {
+        this.dao = new AlunoDAO(); // inicializado não importa em qual construtor
+    }
+
+    // Método Construtor de Objeto, inserindo dados
+    public Amigo(String Nome, int Telefone) {
+        this.Nome = Nome;
+        this.Telefone = Telefone;
+        this.dao = new AlunoDAO(); // inicializado não importa em qual construtor
+    }
+
+    // Método Construtor usando também o construtor da SUPERCLASSE
+    public Amigo(String Nome, int Telefone, int id) {
+        this.Nome = Nome;
+        this.Telefone = Telefone;
+        this.id = id;
+        this.dao = new AlunoDAO(); // inicializado não importa em qual construtor
+    }
+
+    // Métodos GET e SET
+    public String getNome() {
+        return Nome;
+    }
+
+    public void setNome(String Nome) {
+        this.Nome = Nome;
+    }
+
+    public int getTelefone() {
+        return Telefone;
+    }
+
+    public void setTelefone(int Telefone) {
+        this.Telefone = Telefone;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    // Override necessário para poder retornar os dados de Pessoa no toString para amigo.
+    @Override
+    public String toString() {
+        return "\n ID: " + this.getId()
+                + "\n Nome: " + this.getNome()
+                + "\n Telefone:" + this.getTelefone()
+                + "\n -----------";
+    }
+
+    /*
+    
+        ABAIXO OS MÉTODOS PARA USO JUNTO COM O DAO
+        SIMULANDO A ESTRUTURA EM CAMADAS PARA USAR COM BANCOS DE DADOS.
+    
+     */
+    // Retorna a Lista de Amigos(objetos)
+    public ArrayList<Amigo> getMinhaLista() {
+        return dao.getMinhaLista();
+    }
+
+    // Cadastra novo amigo
+    public boolean InsertAmigoBD(String Nome, int Telefone) throws SQLException {
+        int id = this.maiorID() + 1;
+        Amigo objeto = new Amigo(Nome, Telefone, id);
+        dao.InsertAmigoBD(objeto);
+        return true;
+    }
+
+    // Deleta um amigo específico pelo seu campo ID
+    public boolean DeleteAmigoBD(int id) {
+        dao.DeleteAmigoBD(id);
+        return true;
+    }
+
+    // Edita um amigo específico pelo seu campo ID
+    public boolean UpdateAmigoBD(String Nome, int Telefone, int id) {
+        Amigo objeto = new Amigo(Nome, Telefone, id);
+        dao.UpdateAmigoBD(objeto);
+        return true;
+    }
+
+    // carrega dados de um amigo específico pelo seu ID
+    public Amigo carregaAmigo(int id) {
+        dao.carregaAmigo(id);
+        return null;
+    }
+    
+    // retorna o maior ID da nossa base de dados
+    public int maiorID() throws SQLException {
+        return dao.maiorID();
+    }
+}
 
