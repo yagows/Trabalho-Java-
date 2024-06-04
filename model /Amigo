@@ -1,113 +1,81 @@
-package Model;
+package model;
 
-import java.util.*;
-import DAO.AlunoDAO;
+import dao.AmigoDAO;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
-public class Amigo extends Pessoa {
+public class Amigo {
 
-    // Atributos
-    private String Nome;
-    private int Telefone;
-    private int id;
+    private String nome;
+    private String telefone;
+    private final AmigoDAO dao;
 
-    private final AlunoDAO dao;
-
-    // Método Construtor de Objeto Vazio
     public Amigo() {
-        this.dao = new AlunoDAO(); // inicializado não importa em qual construtor
+        this.dao = new AmigoDAO();
     }
 
-    // Método Construtor de Objeto, inserindo dados
-    public Amigo(String Nome, int Telefone) {
-        this.Nome = Nome;
-        this.Telefone = Telefone;
-        this.dao = new AlunoDAO(); // inicializado não importa em qual construtor
+    public Amigo(String nome, String telefone) {
+        this.nome = nome;
+        this.telefone = telefone;
+        this.dao = new AmigoDAO();
     }
 
-    // Método Construtor usando também o construtor da SUPERCLASSE
-    public Amigo(String Nome, int Telefone, int id) {
-        this.Nome = Nome;
-        this.Telefone = Telefone;
-        this.id = id;
-        this.dao = new AlunoDAO(); // inicializado não importa em qual construtor
-    }
-
-    // Métodos GET e SET
     public String getNome() {
-        return Nome;
+        return nome;
     }
 
-    public void setNome(String Nome) {
-        this.Nome = Nome;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public int getTelefone() {
-        return Telefone;
+    public String getTelefone() {
+        return telefone;
     }
 
-    public void setTelefone(int Telefone) {
-        this.Telefone = Telefone;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    // Override necessário para poder retornar os dados de Pessoa no toString para amigo.
     @Override
     public String toString() {
-        return "\n ID: " + this.getId()
-                + "\n Nome: " + this.getNome()
-                + "\n Telefone:" + this.getTelefone()
-                + "\n -----------";
+        return "Amigo{" +
+                "nome='" + nome + '\'' +
+                ", telefone='" + telefone + '\'' +
+                '}';
     }
 
-    /*
-    
-        ABAIXO OS MÉTODOS PARA USO JUNTO COM O DAO
-        SIMULANDO A ESTRUTURA EM CAMADAS PARA USAR COM BANCOS DE DADOS.
-    
-     */
-    // Retorna a Lista de Amigos(objetos)
     public ArrayList<Amigo> getMinhaLista() {
         return dao.getMinhaLista();
     }
 
-    // Cadastra novo amigo
-    public boolean InsertAmigoBD(String Nome, int Telefone) throws SQLException {
+    public boolean insertAmigoBD(String nome, String telefone) throws SQLException {
         int id = this.maiorID() + 1;
-        Amigo objeto = new Amigo(Nome, Telefone, id);
-        dao.InsertAmigoBD(objeto);
+        Amigo objeto = new Amigo(nome, telefone);
+        dao.insertAmigoBD(objeto);
         return true;
     }
 
-    // Deleta um amigo específico pelo seu campo ID
-    public boolean DeleteAmigoBD(int id) {
-        dao.DeleteAmigoBD(id);
+    public boolean deleteAmigoBD(String nome) {
+        dao.deleteAmigoBD(nome);
         return true;
     }
 
-    // Edita um amigo específico pelo seu campo ID
-    public boolean UpdateAmigoBD(String Nome, int Telefone, int id) {
-        Amigo objeto = new Amigo(Nome, Telefone, id);
-        dao.UpdateAmigoBD(objeto);
+    public boolean updateAmigoBD(String nome, String telefone) {
+        Amigo objeto = new Amigo(nome, telefone);
+        dao.updateAmigoBD(objeto);
         return true;
     }
 
-    // carrega dados de um amigo específico pelo seu ID
-    public Amigo carregaAmigo(int id) {
-        dao.carregaAmigo(id);
-        return null;
+    public Amigo carregaAmigo(String nome) {
+        return dao.carregaAmigo(nome);
     }
-    
-    // retorna o maior ID da nossa base de dados
+
     public int maiorID() throws SQLException {
         return dao.maiorID();
     }
-}
 
+    // Retorna o ID do amigo baseado no nome
+    public int getAmigoId(String nome) throws SQLException {
+        return dao.getAmigoId(nome);
+    }
+}
