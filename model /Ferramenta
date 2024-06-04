@@ -1,18 +1,17 @@
-package Model;
+package model;
 
-import java.util.*;
-import DAO.FerramentaDAO;
+import dao.FerramentaDAO;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
-public class Ferramenta extends Pessoa {
+public class Ferramenta {
 
     // Atributos
-    private String Nome;
-    private String Marca;
-    private double Custo;
     private int id;
-
-    private final FerramentaDAO dao;
+    private String nome;
+    private String marca;
+    private double custo;
+    private final FerramentaDAO dao; 
 
     // Método Construtor de Objeto Vazio
     public Ferramenta() {
@@ -20,47 +19,19 @@ public class Ferramenta extends Pessoa {
     }
 
     // Método Construtor de Objeto, inserindo dados
-    public Ferramenta(String Nome, String Marca, double Custo) {
-        this.Nome = Nome;
-        this.Marca = Marca;
-        this.Custo = Custo;
+    public Ferramenta(int id, String nome, String marca, double custo) {
+        this.id = id;
+        this.nome = nome;
+        this.marca = marca;
+        this.custo = custo;
         this.dao = new FerramentaDAO(); // inicializado não importa em qual construtor
     }
 
-    // Método Construtor usando também o construtor da SUPERCLASSE
-    public Ferramenta(String Nome, String Marca, double Custo, int id, String nome, int idade) {
-        super(id, nome, idade);
-        this.Nome = Nome;
-        this.Marca = Marca;
-        this.Custo = Custo;
-        this.dao = new FerramentaDAO(); // inicializado não importa em qual construtor
+    public Ferramenta(String nome, String marca, double custo) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     // Métodos GET e SET
-    public String getNome() {
-        return Nome;
-    }
-
-    public void setNome(String Nome) {
-        this.Nome = Nome;
-    }
-
-    public String getMarca() {
-        return Marca;
-    }
-
-    public void setMarca(String Marca) {
-        this.Marca = Marca;
-    }
-
-    public double getCusto() {
-        return Custo;
-    }
-
-    public void setCusto(double Custo) {
-        this.Custo = Custo;
-    }
-
     public int getId() {
         return id;
     }
@@ -69,14 +40,39 @@ public class Ferramenta extends Pessoa {
         this.id = id;
     }
 
-    // Override necessário para poder retornar os dados de Pessoa no toString para ferramenta.
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public double getCusto() {
+        return custo;
+    }
+
+    public void setCusto(double custo) {
+        this.custo = custo;
+    }
+
+    // Método toString para facilitar a impressão dos dados da ferramenta
     @Override
     public String toString() {
-        return "\n ID: " + this.getId()
-                + "\n Nome: " + this.getNome()
-                + "\n Marca: " + this.getMarca()
-                + "\n Custo:" + this.getCusto()
-                + "\n -----------";
+        return "Ferramenta{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", marca='" + marca + '\'' +
+                ", custo=" + custo +
+                '}';
     }
 
     /*
@@ -85,41 +81,38 @@ public class Ferramenta extends Pessoa {
         SIMULANDO A ESTRUTURA EM CAMADAS PARA USAR COM BANCOS DE DADOS.
     
      */
-    // Retorna a Lista de Ferramentas(objetos)
+    // Retorna a Lista de Ferramentas (objetos)
     public ArrayList<Ferramenta> getMinhaLista() {
         return dao.getMinhaLista();
     }
 
     // Cadastra nova ferramenta
-    public boolean InsertFerramentaBD(String Nome, String Marca, double Custo) throws SQLException {
-        int id = this.maiorID() + 1;
-        Ferramenta objeto = new Ferramenta(Nome, Marca, Custo, id, null, 0);
-        dao.InsertFerramentaBD(objeto);
+    public boolean insertFerramentaBD(int id, String nome, String marca, double custo) throws SQLException {
+        Ferramenta objeto = new Ferramenta(id, nome, marca, custo);
+        dao.insertFerramentaBD(objeto);
         return true;
     }
 
-    // Deleta uma ferramenta específica pelo seu campo ID
-    public boolean DeleteFerramentaBD(int id) {
-        dao.DeleteFerramentaBD(id);
+    // Deleta uma ferramenta específica pelo seu nome
+    public boolean deleteFerramentaBD(String nome) {
+        dao.deleteFerramentaBD(nome);
         return true;
     }
 
-    // Edita uma ferramenta específica pelo seu campo ID
-    public boolean UpdateFerramentaBD(String Nome, String Marca, double Custo, int id, String nome, int idade) {
-        Ferramenta objeto = new Ferramenta(Nome, Marca, Custo, id, nome, idade);
-        dao.UpdateFerramentaBD(objeto);
+    // Edita uma ferramenta específica pelo seu nome
+    public boolean updateFerramentaBD(int id, String nome, String marca, double custo) {
+        Ferramenta objeto = new Ferramenta(id, nome, marca, custo);
+        dao.updateFerramentaBD(objeto);
         return true;
     }
 
-    // carrega dados de uma ferramenta específica pelo seu ID
-    public Ferramenta carregaFerramenta(int id) {
-        dao.carregaFerramenta(id);
-        return null;
+    // Carrega dados de uma ferramenta específica pelo seu nome
+    public Ferramenta carregaFerramenta(String nome) {
+        return (Ferramenta) dao.carregaFerramenta(nome);
     }
     
-    // retorna o maior ID da nossa base de dados
+    // Retorna o maior ID da nossa base de dados
     public int maiorID() throws SQLException {
         return dao.maiorID();
     }
 }
-
