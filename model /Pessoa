@@ -6,7 +6,7 @@ public class Pessoa {
     private int id;
     private String Nome;
     private String Marca;
-    private int Telefone;
+    public String Telefone;
     private double Custo;
 
     // Método Construtor de Objeto Vazio
@@ -14,7 +14,7 @@ public class Pessoa {
     }
 
     // Método Construtor de Objeto, inserindo dados
-    public Pessoa(int id, String Nome, String Marca, int Telefone, double Custo) {
+    public Pessoa(int id, String Nome, String Marca, String Telefone, double Custo) {
         this.id = id;
         this.Nome = Nome;
         this.Marca = Marca;
@@ -47,11 +47,11 @@ public class Pessoa {
         this.Marca = Marca;
     }
 
-    public int getTelefone() {
+    public String getTelefone() {
         return Telefone;
     }
 
-    public void setTelefone(int Telefone) {
+    public void setTelefone(String Telefone) {
         this.Telefone = Telefone;
     }
 
