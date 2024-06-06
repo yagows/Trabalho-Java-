@@ -1,0 +1,159 @@
+package dao;
+
+import model.Emprestimo;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import conection.ConnectionFactory;
+
+public class EmprestimoDAO {
+
+    public static ArrayList<Emprestimo> MinhaLista = new ArrayList<Emprestimo>();
+
+    public EmprestimoDAO() {
+    }
+
+    public int maiorID() throws SQLException {
+        int maiorID = 0;
+        try {
+            Statement stmt = this.getConexao().createStatement();
+            ResultSet res = stmt.executeQuery("SELECT MAX(id) AS id FROM tb_Emprestimos");
+            if (res.next()) {
+                maiorID = res.getInt("id");
+            }
+            stmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return maiorID;
+    }
+
+    public Connection getConexao() {
+        Connection connection = null;  
+        try {
+            String driver = "com.mysql.cj.jdbc.Driver";
+            Class.forName(driver);
+
+            String url = "jdbc:mysql://localhost:8111/bancodadosa3";
+            String user = "root";
+            String password = "@Augusto206";
+
+            connection = DriverManager.getConnection(url, user, password);
+
+            if (connection != null) {
+                System.out.println("Status: Conectado!");
+            } else {
+                System.out.println("Status: NÃO CONECTADO!");
+            }
+        } catch (ClassNotFoundException e) {
+            System.out.println("O driver não foi encontrado. " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Não foi possível conectar...");
+        }
+        return connection;
+    }
+
+    // Retorna a Lista de Emprestimos (objetos)
+    public ArrayList<Emprestimo> getMinhaLista() {
+        MinhaLista.clear(); 
+
+        try {
+            Statement stmt = this.getConexao().createStatement();
+            ResultSet res = stmt.executeQuery("SELECT * FROM tb_Empréstimos");
+            while (res.next()) {    
+                int id = res.getInt("id");
+                int idFerramenta = res.getInt("id_ferramenta");
+                int idAmigo = res.getInt("id_amigo");
+                Date dataEmprestimo = res.getDate("data_empréstimo");
+                Date dataDevolucao = res.getDate("data_devolução");
+
+                Emprestimo objeto = new Emprestimo(id, idFerramenta, idAmigo, dataEmprestimo, dataDevolucao);
+                MinhaLista.add(objeto);
+            }
+            stmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return MinhaLista;
+    }
+
+    // Cadastra novo emprestimo
+    public boolean insertEmprestimoBD(Emprestimo objeto) {
+        String sql = "INSERT INTO tb_Empréstimos(id_ferramenta, id_amigo, data_empréstimo, data_devolução) VALUES(?, ?, ?, ?)";
+
+        try {
+            try (PreparedStatement stmt = this.getConexao().prepareStatement(sql)) {
+                stmt.setInt(1, objeto.getIdFerramenta());
+                stmt.setInt(2, objeto.getIdAmigo());
+                stmt.setDate(3, new java.sql.Date(objeto.getDataEmprestimo().getTime()));
+                stmt.setDate(4, new java.sql.Date(objeto.getDataDevolucao().getTime()));
+
+                stmt.execute();
+            }
+            return true;
+        } catch (SQLException erro) {
+            throw new RuntimeException(erro);
+        }
+    }
+
+    // Deleta um emprestimo específico pelo seu ID
+    public boolean deleteEmprestimoBD(int id) {
+        try {
+            Statement stmt = this.getConexao().createStatement();
+            stmt.executeUpdate("DELETE FROM tb_Empréstimos WHERE id = " + id);
+            stmt.close();
+        } catch (SQLException erro) {
+            erro.printStackTrace();
+        }
+        return true;
+    }
+
+    // Edita um emprestimo específico pelo seu ID
+    public boolean updateEmprestimoBD(Emprestimo objeto) {
+        String sql = "UPDATE tb_Empréstimos SET id_ferramenta = ?, id_amigo = ?, data_empréstimo = ?, data_devolução = ? WHERE id = ?";
+
+        try {
+            PreparedStatement stmt = this.getConexao().prepareStatement(sql);
+            stmt.setInt(1, objeto.getIdFerramenta());
+            stmt.setInt(2, objeto.getIdAmigo());
+            stmt.setDate(3, new java.sql.Date(objeto.getDataEmprestimo().getTime()));
+            stmt.setDate(4, new java.sql.Date(objeto.getDataDevolucao().getTime()));
+            stmt.setInt(5, objeto.getId());
+
+            stmt.execute();
+            stmt.close();
+            return true;
+        } catch (SQLException erro) {
+            throw new RuntimeException(erro);
+        }
+    }
+
+    // Carrega um emprestimo específico pelo seu ID
+    public Emprestimo carregaEmprestimo(int id) {
+        Emprestimo objeto = new Emprestimo();
+
+        try {
+            Statement stmt = this.getConexao().createStatement();
+            ResultSet res = stmt.executeQuery("SELECT * FROM tb_Empréstimos WHERE id = " + id);
+            if (res.next()) {
+                objeto.setId(res.getInt("id"));
+                objeto.setIdFerramenta(res.getInt("id_ferramenta"));
+                objeto.setIdAmigo(res.getInt("id_amigo"));
+                objeto.setDataEmprestimo(res.getDate("data_empréstimo"));
+                objeto.setDataDevolucao(res.getDate("data_devolução"));
+            }
+            stmt.close();
+        } catch (SQLException erro) {
+            erro.printStackTrace();
+        }
+        return objeto;
+    }
+
+    public void salvar(Emprestimo emprestimo) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void excluir(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+}
