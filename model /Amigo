@@ -1,81 +1,81 @@
-package model;
+        package model;
 
-import dao.AmigoDAO;
-import java.sql.SQLException;
-import java.util.ArrayList;
+        import dao.AmigoDAO;
+        import java.sql.SQLException;
+        import java.util.ArrayList;
 
-public class Amigo {
+        public class Amigo {
 
-    private String nome;
-    private String telefone;
-    private final AmigoDAO dao;
+            private String nome;
+            private String telefone;
+            private final AmigoDAO dao;
 
-    public Amigo() {
-        this.dao = new AmigoDAO();
-    }
+            public Amigo() {
+                this.dao = new AmigoDAO();
+            }
 
-    public Amigo(String nome, String telefone) {
-        this.nome = nome;
-        this.telefone = telefone;
-        this.dao = new AmigoDAO();
-    }
+            public Amigo(String nome, String telefone) {
+                this.nome = nome;
+                this.telefone = telefone;
+                this.dao = new AmigoDAO();
+            }
 
-    public String getNome() {
-        return nome;
-    }
+            public String getNome() {
+                return nome;
+            }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+            public void setNome(String nome) {
+                this.nome = nome;
+            }
 
-    public String getTelefone() {
-        return telefone;
-    }
+            public String getTelefone() {
+                return telefone;
+            }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
+            public void setTelefone(String telefone) {
+                this.telefone = telefone;
+            }
 
-    @Override
-    public String toString() {
-        return "Amigo{" +
-                "nome='" + nome + '\'' +
-                ", telefone='" + telefone + '\'' +
-                '}';
-    }
+            @Override
+            public String toString() {
+                return "Amigo{" +
+                        "nome='" + nome + '\'' +
+                        ", telefone='" + telefone + '\'' +
+                        '}';
+            }
 
-    public ArrayList<Amigo> getMinhaLista() {
-        return dao.getMinhaLista();
-    }
+            public ArrayList<Amigo> getMinhaLista() {
+                return dao.getMinhaLista();
+            }
 
-    public boolean insertAmigoBD(String nome, String telefone) throws SQLException {
-        int id = this.maiorID() + 1;
-        Amigo objeto = new Amigo(nome, telefone);
-        dao.insertAmigoBD(objeto);
-        return true;
-    }
+            public boolean insertAmigoBD(String nome, String telefone) throws SQLException {
+                int id = this.maiorID() + 1;
+                Amigo objeto = new Amigo(nome, telefone);
+                dao.insertAmigoBD(objeto);
+                return true;
+            }
 
-    public boolean deleteAmigoBD(String nome) {
-        dao.deleteAmigoBD(nome);
-        return true;
-    }
+            public boolean deleteAmigoBD(String nome) {
+                dao.deleteAmigoBD(nome);
+                return true;
+            }
 
-    public boolean updateAmigoBD(String nome, String telefone) {
-        Amigo objeto = new Amigo(nome, telefone);
-        dao.updateAmigoBD(objeto);
-        return true;
-    }
+            public boolean updateAmigoBD(String nome, String telefone) {
+                Amigo objeto = new Amigo(nome, telefone);
+                dao.updateAmigoBD(objeto);
+                return true;
+            }
 
-    public Amigo carregaAmigo(String nome) {
-        return dao.carregaAmigo(nome);
-    }
+            public Amigo carregaAmigoBD(String nome) {
+                return dao.carregaAmigoBD(nome);
+            }
 
-    public int maiorID() throws SQLException {
-        return dao.maiorID();
-    }
+            public int maiorID() throws SQLException {
+                return dao.maiorID();
+            }
 
-    // Retorna o ID do amigo baseado no nome
-    public int getAmigoId(String nome) throws SQLException {
-        return dao.getAmigoId(nome);
-    }
-}
+            // Retorna o ID do amigo baseado no nome
+            public int getAmigoId(String nome) throws SQLException {
+                return dao.getAmigoId(nome);
+            }
+        }
