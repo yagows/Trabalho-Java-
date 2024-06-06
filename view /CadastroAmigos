@@ -4,6 +4,10 @@
  */
 package view;
 
+import dao.AmigoDAO;
+import javax.swing.JOptionPane;
+import model.Amigo;
+
 /**
  *
  * @author augus
@@ -29,11 +33,11 @@ public class CadastroAmigos extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jToggleButton1 = new javax.swing.JToggleButton();
-        jToggleButton2 = new javax.swing.JToggleButton();
+        JBSalvar = new javax.swing.JToggleButton();
+        JBExcluir = new javax.swing.JToggleButton();
         JBFechar = new javax.swing.JToggleButton();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        TFNome = new javax.swing.JTextField();
+        TFTelefone = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -43,14 +47,19 @@ public class CadastroAmigos extends javax.swing.JFrame {
 
         jLabel3.setText("Telefone:");
 
-        jToggleButton1.setText("Salvar");
-        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+        JBSalvar.setText("Salvar");
+        JBSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton1ActionPerformed(evt);
+                JBSalvarActionPerformed(evt);
             }
         });
 
-        jToggleButton2.setText("Limpar");
+        JBExcluir.setText("Excluir");
+        JBExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBExcluirActionPerformed(evt);
+            }
+        });
 
         JBFechar.setForeground(new java.awt.Color(204, 0, 0));
         JBFechar.setText("Fechar");
@@ -60,15 +69,15 @@ public class CadastroAmigos extends javax.swing.JFrame {
             }
         });
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        TFNome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                TFNomeActionPerformed(evt);
             }
         });
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        TFTelefone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                TFTelefoneActionPerformed(evt);
             }
         });
 
@@ -87,15 +96,15 @@ public class CadastroAmigos extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1))
+                                .addComponent(TFNome))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField2))
+                                .addComponent(TFTelefone))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(JBSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jToggleButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(JBExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(JBFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 23, Short.MAX_VALUE)))))
@@ -108,15 +117,15 @@ public class CadastroAmigos extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TFNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TFTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jToggleButton1)
-                    .addComponent(jToggleButton2)
+                    .addComponent(JBSalvar)
+                    .addComponent(JBExcluir)
                     .addComponent(JBFechar))
                 .addGap(25, 25, 25))
         );
@@ -124,22 +133,55 @@ public class CadastroAmigos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>                        
 
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                               
+    private void JBSalvarActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
-    }                                              
+          String nome = TFNome.getText();
+        String telefone = TFTelefone.getText();
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        // TODO add your handling code here:
-    }                                           
+        if (nome.isEmpty() || telefone.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.");
+        } else {
+            Amigo amigo = new Amigo();
+            amigo.setNome(nome);
+            amigo.setTelefone(telefone);
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {                                            
+            AmigoDAO amigoDAO = new AmigoDAO();
+            amigoDAO.insertAmigoBD(amigo);
+
+            JOptionPane.showMessageDialog(this, "Amigo salvo com sucesso!");
+
+            limparCampos();
+        }
+    }                                        
+
+    private void TFNomeActionPerformed(java.awt.event.ActionEvent evt) {                                       
         // TODO add your handling code here:
-    }                                           
+    }                                      
+
+    private void TFTelefoneActionPerformed(java.awt.event.ActionEvent evt) {                                           
+        // TODO add your handling code here:
+    }                                          
 
     private void JBFecharActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
         dispose();
     }                                        
+
+    private void JBExcluirActionPerformed(java.awt.event.ActionEvent evt) {                                          
+        String nome = TFNome.getText();
+
+        if (nome.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, insira o nome do amigo a ser excluído.");
+        } else {
+            AmigoDAO amigoDAO = new AmigoDAO();
+            amigoDAO.deleteAmigoBD(nome);
+
+            JOptionPane.showMessageDialog(this, "Amigo excluído com sucesso!");
+
+            limparCampos();
+        }
+    }                                         
+
 
     /**
      * @param args the command line arguments
@@ -175,16 +217,21 @@ public class CadastroAmigos extends javax.swing.JFrame {
             }
         });
     }
+private void limparCampos() {
+    TFNome.setText("");
+    TFTelefone.setText("");
+}
 
     // Variables declaration - do not modify                     
+    private javax.swing.JToggleButton JBExcluir;
     private javax.swing.JToggleButton JBFechar;
+    private javax.swing.JToggleButton JBSalvar;
+    private javax.swing.JTextField TFNome;
+    private javax.swing.JTextField TFTelefone;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToggleButton jToggleButton2;
     // End of variables declaration                   
+
 }
 
