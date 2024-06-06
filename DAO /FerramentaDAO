@@ -1,14 +1,13 @@
 package dao;
 
-
-import model.Ferramenta;
 import java.sql.*;
 import java.util.ArrayList;
 import conection.ConnectionFactory;
+import model.Ferramenta;
 
 public class FerramentaDAO {
 
-    public static ArrayList<Ferramenta> MinhaLista = new ArrayList<Ferramenta>();
+    public ArrayList<Ferramenta> MinhaLista = new ArrayList<>();
 
     public FerramentaDAO() {
     }
@@ -16,142 +15,163 @@ public class FerramentaDAO {
     public int maiorID() throws SQLException {
         int maiorID = 0;
         try {
-            Statement stmt = this.getConexao().createStatement();
+            Connection con = ConnectionFactory.getConnection();
+            Statement stmt = con.createStatement();
             ResultSet res = stmt.executeQuery("SELECT MAX(id) AS id FROM tb_Ferramentas");
             if (res.next()) {
                 maiorID = res.getInt("id");
             }
             stmt.close();
+            con.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return maiorID;
     }
 
-    public Connection getConexao() {
-        Connection connection = null;  
-        try {
-            String driver = "com.mysql.cj.jdbc.Driver";
-            Class.forName(driver);
-
-            String url = "jdbc:mysql://localhost:8111/bancodadosa3";
-            String user = "root";
-            String password = "";
-
-            connection = DriverManager.getConnection(url, user, password);
-
-            if (connection != null) {
-                System.out.println("Status: Conectado!");
-            } else {
-                System.out.println("Status: NÃO CONECTADO!");
-            }
-        } catch (ClassNotFoundException e) {
-            System.out.println("O driver não foi encontrado. " + e.getMessage());
-        } catch (SQLException e) {
-            System.out.println("Não foi possível conectar...");
-        }
-        return connection;
-    }
-
-    // Retorna a Lista de Ferramentas (objetos)
+    // Retorna a Lista de Amigos(objetos)
     public ArrayList<Ferramenta> getMinhaLista() {
-        MinhaLista.clear(); 
+        MinhaLista.clear();
 
         try {
-            Statement stmt = this.getConexao().createStatement();
+            Connection con = ConnectionFactory.getConnection();
+            Statement stmt = con.createStatement();
             ResultSet res = stmt.executeQuery("SELECT * FROM tb_Ferramentas");
-            while (res.next()) {    
+            while (res.next()) {
                 String nome = res.getString("nome");
                 String marca = res.getString("marca");
-                double custo = res.getDouble("custo");
+                Double custo = res.getDouble("custo");
+
+                
 
                 Ferramenta objeto = new Ferramenta(nome, marca, custo);
                 MinhaLista.add(objeto);
             }
             stmt.close();
+            con.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return MinhaLista;
     }
 
-    // Cadastra nova ferramenta
+    // Cadastra novo amigo
     public boolean insertFerramentaBD(Ferramenta objeto) {
         String sql = "INSERT INTO tb_Ferramentas(nome, marca, custo) VALUES(?, ?, ?)";
 
         try {
-            try (PreparedStatement stmt = this.getConexao().prepareStatement(sql)) {
-                stmt.setString(1, objeto.getNome());
-                stmt.setString(2, objeto.getMarca());
-                stmt.setDouble(3, objeto.getCusto());
+            Connection con = ConnectionFactory.getConnection();
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, objeto.getNome());
+            stmt.setString(2, objeto.getMarca());
+            stmt.setDouble(3, objeto.getCusto());
 
-                stmt.execute();
-            }
+
+            stmt.execute();
+            stmt.close();
+            con.close();
             return true;
         } catch (SQLException erro) {
             throw new RuntimeException(erro);
         }
     }
 
-    // Deleta uma ferramenta específica pelo seu nome
+    // Deleta um amigo específico pelo seu nome
     public boolean deleteFerramentaBD(String nome) {
         try {
-            Statement stmt = this.getConexao().createStatement();
+            Connection con = ConnectionFactory.getConnection();
+            Statement stmt = con.createStatement();
             stmt.executeUpdate("DELETE FROM tb_Ferramentas WHERE nome = '" + nome + "'");
             stmt.close();
+            con.close();
         } catch (SQLException erro) {
             erro.printStackTrace();
         }
         return true;
     }
 
-    // Edita uma ferramenta específica pelo seu nome
+    // Edita um amigo específico pelo seu nome
     public boolean updateFerramentaBD(Ferramenta objeto) {
-        String sql = "UPDATE tb_Ferramentas SET marca = ?, custo = ? WHERE nome = ?";
+        String sql = "UPDATE tb_Ferramentas SET telefone = ? WHERE nome = ?";
 
         try {
-            PreparedStatement stmt = this.getConexao().prepareStatement(sql);
+            Connection con = ConnectionFactory.getConnection();
+            PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, objeto.getMarca());
-            stmt.setDouble(2, objeto.getCusto());
-            stmt.setString(3, objeto.getNome());
+            stmt.setString(2, objeto.getNome());
+             stmt.setDouble(3, objeto.getCusto());
 
             stmt.execute();
             stmt.close();
+            con.close();
             return true;
         } catch (SQLException erro) {
             throw new RuntimeException(erro);
         }
     }
 
-    public Ferramenta carregaFerramenta(String nome) {
+    // Carrega um amigo pelo nome
+    public Ferramenta carregaFerramentaBD(String nome) {
         Ferramenta objeto = new Ferramenta();
 
         try {
-            Statement stmt = this.getConexao().createStatement();
+            Connection con = ConnectionFactory.getConnection();
+            Statement stmt = con.createStatement();
             ResultSet res = stmt.executeQuery("SELECT * FROM tb_Ferramentas WHERE nome = '" + nome + "'");
             if (res.next()) {
                 objeto.setNome(res.getString("nome"));
                 objeto.setMarca(res.getString("marca"));
                 objeto.setCusto(res.getDouble("custo"));
+                
             }
             stmt.close();
+            con.close();
         } catch (SQLException erro) {
             erro.printStackTrace();
         }
         return objeto;
     }
 
-    public void salvar(Ferramenta ferramenta) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    // Carrega um amigo pelo ID
     public Ferramenta carregaFerramenta(int ferramentaId) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Ferramenta objeto = new Ferramenta();
+
+        try {
+            Connection con = ConnectionFactory.getConnection();
+            PreparedStatement stmt = con.prepareStatement("SELECT * FROM tb_Ferramentas WHERE id = ?");
+            stmt.setInt(1, ferramentaId);
+            ResultSet res = stmt.executeQuery();
+            if (res.next()) {
+                objeto.setNome(res.getString("nome"));
+                objeto.setMarca(res.getString("marca"));
+                objeto.setCusto(res.getDouble("custo"));
+            }
+            stmt.close();
+            con.close();
+        } catch (SQLException erro) {
+            erro.printStackTrace();
+        }
+        return objeto;
     }
 
-    public int getFerramentaId(String nomeFerramenta) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    // Obtém o ID de um amigo pelo nome
+    public int getFerramentaId(String nome) {
+        int ferramentaId = 0;
+        try {
+            Connection con = ConnectionFactory.getConnection();
+            PreparedStatement stmt = con.prepareStatement("SELECT id FROM tb_Ferramentas WHERE nome = ?");
+            stmt.setString(1, nome);
+            ResultSet res = stmt.executeQuery();
+            if (res.next()) {
+                ferramentaId = res.getInt("id");
+            }
+            stmt.close();
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return ferramentaId;
     }
 
-
+    
 }
