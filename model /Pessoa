@@ -1,25 +1,32 @@
 package model;
 
 public class Pessoa {
-    
- // Atributos
+    // Atributos
     private int id;
-    private String Nome;
-    private String Marca;
-    public String Telefone;
-    private double Custo;
+    private String nome;
+    private String marca;
+    private String telefone;
+    private double custo;
+    private int idFerramenta;
+    private int idAmigo;
+    private String dataEmprestimo;
+    private String dataDevolucao;
 
     // Método Construtor de Objeto Vazio
     public Pessoa() {
     }
 
     // Método Construtor de Objeto, inserindo dados
-    public Pessoa(int id, String Nome, String Marca, String Telefone, double Custo) {
+    public Pessoa(int id, String nome, String marca, String telefone, double custo, int idFerramenta, int idAmigo, String dataEmprestimo, String dataDevolucao) {
         this.id = id;
-        this.Nome = Nome;
-        this.Marca = Marca;
-        this.Telefone = Telefone;
-        this.Custo = Custo;
+        this.nome = nome;
+        this.marca = marca;
+        this.telefone = telefone;
+        this.custo = custo;
+        this.idFerramenta = idFerramenta;
+        this.idAmigo = idAmigo;
+        this.dataEmprestimo = dataEmprestimo;
+        this.dataDevolucao = dataDevolucao;
     }
 
     // Métodos GET e SET
@@ -32,34 +39,66 @@ public class Pessoa {
     }
 
     public String getNome() {
-        return Nome;
+        return nome;
     }
 
-    public void setNome(String Nome) {
-        this.Nome = Nome;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getMarca() {
-        return Marca;
+        return marca;
     }
 
-    public void setMarca(String Marca) {
-        this.Marca = Marca;
+    public void setMarca(String marca) {
+        this.marca = marca;
     }
 
     public String getTelefone() {
-        return Telefone;
+        return telefone;
     }
 
-    public void setTelefone(String Telefone) {
-        this.Telefone = Telefone;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     public double getCusto() {
-        return Custo;
+        return custo;
     }
 
-    public void setCusto(double Custo) {
-        this.Custo = Custo;
+    public void setCusto(double custo) {
+        this.custo = custo;
     }
-}       
+
+    public int getIdFerramenta() {
+        return idFerramenta;
+    }
+
+    public void setIdFerramenta(int idFerramenta) {
+        this.idFerramenta = idFerramenta;
+    }
+
+    public int getIdAmigo() {
+        return idAmigo;
+    }
+
+    public void setIdAmigo(int idAmigo) {
+        this.idAmigo = idAmigo;
+    }
+
+    public String getDataEmprestimo() {
+        return dataEmprestimo;
+    }
+
+    public void setDataEmprestimo(String dataEmprestimo) {
+        this.dataEmprestimo = dataEmprestimo;
+    }
+
+    public String getDataDevolucao() {
+        return dataDevolucao;
+    }
+
+    public void setDataDevolucao(String dataDevolucao) {
+        this.dataDevolucao = dataDevolucao;
+    }
+}
