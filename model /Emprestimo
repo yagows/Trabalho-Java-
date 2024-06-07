@@ -1,6 +1,9 @@
 package model;
 
 import java.util.Date;
+import dao.AmigoDAO;
+import dao.FerramentaDAO;
+import java.sql.SQLException;
 
 public class Emprestimo {
     private int id;
@@ -8,27 +11,49 @@ public class Emprestimo {
     private int idAmigo;
     private Date dataEmprestimo;
     private Date dataDevolucao;
+    private double custo;
+
+    private AmigoDAO amigoDAO;
+    private FerramentaDAO ferramentaDAO;
 
     public Emprestimo() {
+        this.amigoDAO = new AmigoDAO();
+        this.ferramentaDAO = new FerramentaDAO();
     }
 
-    public Emprestimo (int id, int idFerramenta, int idAmigo, Date dataEmprestimo, Date dataDevolucao) {
+    public Emprestimo(int id, int idFerramenta, int idAmigo, Date dataEmprestimo, Date dataDevolucao) throws SQLException {
+        this();
         this.id = id;
         this.idFerramenta = idFerramenta;
         this.idAmigo = idAmigo;
         this.dataEmprestimo = dataEmprestimo;
         this.dataDevolucao = dataDevolucao;
+        this.custo = ferramentaDAO.carregaFerramenta(idFerramenta).getCusto(); // Puxar o custo da ferramenta
     }
 
-    public Emprestimo(int idAmigo, int idFerramenta, Date dataEmprestimo, Date dataDevolucao) {
-        this.id = id;
+    public Emprestimo(int idAmigo, int idFerramenta, Date dataEmprestimo, Date dataDevolucao) throws SQLException {
+        this();
         this.idFerramenta = idFerramenta;
         this.idAmigo = idAmigo;
         this.dataEmprestimo = dataEmprestimo;
         this.dataDevolucao = dataDevolucao;
+        this.custo = ferramentaDAO.carregaFerramenta(idFerramenta).getCusto(); // Puxar o custo da ferramenta
     }
 
-   
+    public Emprestimo(int id, int idFerramenta, int idAmigo, double custo, java.sql.Date dataEmprestimo, java.sql.Date dataDevolucao) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    
+    public double getCusto() {
+        return custo;
+    }
+
+    public void setCusto(double custo) {
+        this.custo = custo;
+    }
+
+    // Existing getters and setters
 
     public int getId() {
         return id;
@@ -68,5 +93,18 @@ public class Emprestimo {
 
     public void setDataDevolucao(Date dataDevolucao) {
         this.dataDevolucao = dataDevolucao;
+    }
+
+    public String getNomeAmigo() throws SQLException {
+        return amigoDAO.carregaAmigo(idAmigo).getNome();
+    }
+
+    public String getNomeFerramenta() throws SQLException {
+        return ferramentaDAO.carregaFerramenta(idFerramenta).getNome();
+    }
+
+    
+    public double getCustoFerramenta() throws SQLException {
+        return ferramentaDAO.carregaFerramenta(idFerramenta).getCusto();
     }
 }
