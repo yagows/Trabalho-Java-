@@ -1,113 +1,113 @@
-package model;
+    package model;
 
-import dao.FerramentaDAO;
-import java.sql.SQLException;
-import java.util.ArrayList;
+    import dao.FerramentaDAO;
+    import java.sql.SQLException;
+    import java.util.ArrayList;
 
-public class Ferramenta {
+    public class Ferramenta {
 
-    private int id;
-    private String nome;
-    private String marca;
-    private double custo;
-    private final FerramentaDAO dao;
+        private int id;
+        private String nome;
+        private String marca;
+        private double custo;
+        private final FerramentaDAO dao;
 
-    // Construtor vazio
-    public Ferramenta() {
-        this.dao = new FerramentaDAO();
+        // Construtor vazio
+        public Ferramenta() {
+            this.dao = new FerramentaDAO();
+        }
+
+        // Construtor com nome, marca e custo
+        public Ferramenta(String nome, String marca, double custo) {
+            this.nome = nome;
+            this.marca = marca;
+            this.custo = custo;
+            this.dao = new FerramentaDAO();
+        }
+
+        // Construtor com id, nome, marca e custo
+        public Ferramenta(int id, String nome, String marca, double custo) {
+            this.id = id;
+            this.nome = nome;
+            this.marca = marca;
+            this.custo = custo;
+            this.dao = new FerramentaDAO();
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getNome() {
+            return nome;
+        }
+
+        public void setNome(String nome) {
+            this.nome = nome;
+        }
+
+        public String getMarca() {
+            return marca;
+        }
+
+        public void setMarca(String marca) {
+            this.marca = marca;
+        }
+
+        public double getCusto() {
+            return custo;
+        }
+
+        public void setCusto(double custo) {
+            this.custo = custo;
+        }
+
+        @Override
+        public String toString() {
+            return "Ferramenta{" +
+                    "id=" + id +
+                    ", nome='" + nome + '\'' +
+                    ", marca='" + marca + '\'' +
+                    ", custo=" + custo +
+                    '}';
+        }
+
+        public ArrayList<Ferramenta> getMinhaLista() {
+            return dao.getMinhaLista();
+        }
+
+        public boolean insertFerramentaBD(String nome, String marca, double custo) throws SQLException {
+            int id = this.maiorID() + 1;
+            Ferramenta objeto = new Ferramenta(id, nome, marca, custo);
+            dao.insertFerramentaBD(objeto);
+            return true;
+        }
+
+        public boolean deleteFerramentaBD(String nome) {
+            dao.deleteFerramentaBD(nome);
+            return true;
+        }
+
+        public boolean updateFerramentaBD(String nome, String marca, double custo) {
+            Ferramenta objeto = new Ferramenta(nome, marca, custo);
+            dao.updateFerramentaBD(objeto);
+            return true;
+        }
+
+        public Ferramenta carregaFerramentaBD(String nome) {
+            return dao.carregaFerramentaBD(nome);
+        }
+
+        public int maiorID() throws SQLException {
+            return dao.maiorID();
+        }
+
+        // Retorna o ID da ferramenta baseado no nome
+        public int getFerramentaId(String nome) throws SQLException {
+            return dao.getFerramentaId(nome);
+        }
     }
-
-    // Construtor com nome, marca e custo
-    public Ferramenta(String nome, String marca, double custo) {
-        this.nome = nome;
-        this.marca = marca;
-        this.custo = custo;
-        this.dao = new FerramentaDAO();
-    }
-
-    // Construtor com id, nome, marca e custo
-    public Ferramenta(int id, String nome, String marca, double custo) {
-        this.id = id;
-        this.nome = nome;
-        this.marca = marca;
-        this.custo = custo;
-        this.dao = new FerramentaDAO();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-
-    public double getCusto() {
-        return custo;
-    }
-
-    public void setCusto(double custo) {
-        this.custo = custo;
-    }
-
-    @Override
-    public String toString() {
-        return "Ferramenta{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", marca='" + marca + '\'' +
-                ", custo=" + custo +
-                '}';
-    }
-
-    public ArrayList<Ferramenta> getMinhaLista() {
-        return dao.getMinhaLista();
-    }
-
-    public boolean insertFerramentaBD(String nome, String marca, double custo) throws SQLException {
-        int id = this.maiorID() + 1;
-        Ferramenta objeto = new Ferramenta(id, nome, marca, custo);
-        dao.insertFerramentaBD(objeto);
-        return true;
-    }
-
-    public boolean deleteFerramentaBD(String nome) {
-        dao.deleteFerramentaBD(nome);
-        return true;
-    }
-
-    public boolean updateFerramentaBD(String nome, String marca, double custo) {
-        Ferramenta objeto = new Ferramenta(nome, marca, custo);
-        dao.updateFerramentaBD(objeto);
-        return true;
-    }
-
-    public Ferramenta carregaFerramentaBD(String nome) {
-        return dao.carregaFerramentaBD(nome);
-    }
-
-    public int maiorID() throws SQLException {
-        return dao.maiorID();
-    }
-
-    // Retorna o ID da ferramenta baseado no nome
-    public int getFerramentaId(String nome) throws SQLException {
-        return dao.getFerramentaId(nome);
-    }
-}
