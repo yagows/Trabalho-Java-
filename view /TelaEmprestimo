@@ -12,6 +12,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import model.Amigo;
@@ -75,7 +77,6 @@ public class TelaEmprestimo extends javax.swing.JFrame {
         TFDevolucao = new javax.swing.JTextField();
         TBEmprestimo = new javax.swing.JButton();
         TBFechar = new javax.swing.JToggleButton();
-        JBDevolucao = new javax.swing.JToggleButton();
         CBFerramenta = new javax.swing.JComboBox<>();
         CBAmigo = new javax.swing.JComboBox<>();
 
@@ -117,13 +118,6 @@ public class TelaEmprestimo extends javax.swing.JFrame {
             }
         });
 
-        JBDevolucao.setText("Devolver");
-        JBDevolucao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JBDevolucaoActionPerformed(evt);
-            }
-        });
-
         CBFerramenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CBFerramentaActionPerformed(evt);
@@ -147,9 +141,7 @@ public class TelaEmprestimo extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(TBEmprestimo)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(JBDevolucao, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
                                 .addComponent(TBFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel5)
@@ -197,8 +189,7 @@ public class TelaEmprestimo extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TBEmprestimo)
-                    .addComponent(TBFechar)
-                    .addComponent(JBDevolucao))
+                    .addComponent(TBFechar))
                 .addGap(32, 32, 32))
         );
 
@@ -212,7 +203,7 @@ public class TelaEmprestimo extends javax.swing.JFrame {
     String nomeFerramenta = CBFerramenta.getSelectedItem().toString();
     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
-    // Convertendo a String para um objeto Date
+    
     Date dataEmprestimo = formatter.parse(TFData.getText());
     Date dataDevolucao = formatter.parse(TFDevolucao.getText());
 
@@ -221,6 +212,7 @@ public class TelaEmprestimo extends javax.swing.JFrame {
 
     FerramentaDAO ferramentaDAO = new FerramentaDAO();
     int idFerramenta = ferramentaDAO.getFerramentaId(nomeFerramenta);
+  
 
     Emprestimo emprestimo = new Emprestimo(idAmigo, idFerramenta, dataEmprestimo, dataDevolucao);
 
@@ -232,7 +224,9 @@ public class TelaEmprestimo extends javax.swing.JFrame {
     JOptionPane.showMessageDialog(this, "Erro ao converter data: " + e.getMessage());
     
     limparCampos();
-}
+}       catch (java.sql.SQLException ex) {
+            Logger.getLogger(TelaEmprestimo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }                                            
 
     private void TBFecharActionPerformed(java.awt.event.ActionEvent evt) {                                         
@@ -240,11 +234,6 @@ public class TelaEmprestimo extends javax.swing.JFrame {
 
         dispose();
     }                                        
-
-    private void JBDevolucaoActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        // TODO add your handling code here:                                          
-
-    }                                           
 
     private void TFDataActionPerformed(java.awt.event.ActionEvent evt) {                                       
         // TODO add your handling code here:
@@ -304,7 +293,6 @@ private void limparCampos() {
     // Variables declaration - do not modify                     
     private javax.swing.JComboBox<String> CBAmigo;
     private javax.swing.JComboBox<String> CBFerramenta;
-    private javax.swing.JToggleButton JBDevolucao;
     private javax.swing.JButton TBEmprestimo;
     private javax.swing.JToggleButton TBFechar;
     private javax.swing.JTextField TFData;
@@ -324,4 +312,3 @@ private void limparCampos() {
 
     
 }
-
